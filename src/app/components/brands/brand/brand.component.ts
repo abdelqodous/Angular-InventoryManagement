@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Brand, BrandService } from 'src/app/services/inventory/brand.service';
 
 @Component({
@@ -14,24 +14,42 @@ export class BrandComponent implements OnInit {
 
   constructor(
     private brandService: BrandService,
-    private route: ActivatedRoute
-    ) { }
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.brandId = this.route.snapshot.paramMap.get('brandId');
-    this.retreiveBrand(this.brandId);
+    this.loadBrand(this.brandId);
   }
 
-  retreiveBrand(brandId: any) {
-    this.brandService.findBrandById(brandId).subscribe(
-      data => this.brand = data,
+  loadBrand(brandId: any) {
+    this.brandService.getBrand(brandId).subscribe(
+      data => {
+        this.brand = data
+      }
     );
   }
 
-  saveBrand(){
+  // Update employee data
+  updateEmployee() {
+    if(window.confirm('Are you sure, you want to update?')){
+      this.brandService.updateBrand(this.brandId, this.brand).subscribe(data => {
+        this.router.navigate(['/all-brands'])
+      })
+    }
+  }
 
+  saveBrand() {
+    this.brandService.updateBrand(this.brandId, this.brand).subscribe(
+      data => {
+        console.log(data)
+      }
+    )
   }
 
 }
+
+
 
 

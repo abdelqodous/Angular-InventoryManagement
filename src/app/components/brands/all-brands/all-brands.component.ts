@@ -18,11 +18,17 @@ export class AllBrandsComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.retreiveBrands()
+    this.loadBrands()
   }
 
-  retreiveBrands(){
-    this.brandService.findAllBrands().subscribe( 
+  loadBrands() {
+    return this.brandService.getBrands().subscribe((data) => {
+      this.brands = data;
+    });
+  }
+
+  /*retreiveBrands(){
+    this.brandService.getBrands().subscribe( 
       response => this.brands = response
       // this.brands = response.Brand;
       //   this.date3 = this.datePipe.transform(this.demographics.Birthdate, 'dd.mm.yy');
@@ -30,13 +36,13 @@ export class AllBrandsComponent implements OnInit {
   }
 
   findAllBrands(){
-    this.brandService.findAllBrands().subscribe( 
+    this.brandService.getBrands().subscribe( 
       response => {
         this.brands = response,
         console.log ('this.brands: date: ', this.brands[0].createdAt)
       }
     );
-  }
+  }*/
 
   handleException(){
     this.brandService.brandFailure().subscribe( 
@@ -51,30 +57,40 @@ export class AllBrandsComponent implements OnInit {
   }
 
   findBrandById(brandId: number){
-    this.brandService.findBrandById(brandId).subscribe( 
+    this.brandService.getBrand(brandId).subscribe( 
       response => console.log(response)
     );
   }
 
-  deleteBrand(brandId: number){
+    // Delete employee
+    deleteBrand(brandId: any) {
+      if (window.confirm('Are you sure, you want to delete?')) {
+        this.brandService.deleteBrand(brandId).subscribe((data) => {
+          this.loadBrands();
+          this.successDeleteMessage = `Brand ${brandId} has been deleted..`;
+        });
+      }
+    }
+
+  /*deleteBrand(brandId: number){
     this.brandService.deleteBrand(brandId).subscribe( 
       response => {
         console.log(response);
         this.successDeleteMessage = `Brand ${brandId} has been deleted..`;
-        this.retreiveBrands();
+        this.loadBrands();
       }
     );
-  }
+  }*/
   
   updateBrand(brandId: number){
     this.router.navigate(['/brand', brandId]);
-    // this.brandService.updateBrand(brandId).subscribe( 
-    //   response => {
-    //     console.log(response);
-    //     this.successDeleteMessage = `Brand ${brandId} has been deleted..`;
-    //     this.retreiveBrands();
-    //   }
-    // );
+    /*this.brandService.updateBrand(brandId).subscribe( 
+      response => {
+        console.log(response);
+        this.successDeleteMessage = `Brand ${brandId} has been deleted..`;
+        this.retreiveBrands(); 
+      }
+    );*/
   }
 }
 

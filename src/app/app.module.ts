@@ -14,6 +14,7 @@ import { LogoutComponent } from './components/security/logout/logout.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrandComponent } from './components/brands/brand/brand.component';
 import { RelativeDatePipePipe } from './pipes/inventory/relative-date-pipe.pipe';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { RelativeDatePipePipe } from './pipes/inventory/relative-date-pipe.pipe'
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

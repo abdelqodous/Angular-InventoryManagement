@@ -62,12 +62,16 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+          
+          },
           "configurations": {
             "production": {
               "browserTarget": "InventoryManagement:build:production"
             },
             "development": {
               "browserTarget": "InventoryManagement:build:development"
+              
             }
           },
           "defaultConfiguration": "development"

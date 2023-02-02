@@ -26,7 +26,7 @@
         <label class="control-label col-sm-2" for="createdAt">Created Date:</label>
         <div class="col-sm-3">          
           <input type="date" class="form-control" id="createdAt" 
-            [ngModel]="brand.createdAt | relativeDatePipe" 
+            [ngModel]="brand.createdAt" 
             (ngModelChange)="brand.createdAt=$event" 
             placeholder="Enter Created Date" name="createdAt">
         </div>
@@ -35,7 +35,8 @@
         <label class="control-label col-sm-2" for="updatedAt">Updated Date:</label>
         <div class="col-sm-3">          
           <input type="date" class="form-control" id="updatedAt" 
-                [ngModel]="brand.updatedAt | relativeDatePipe" 
+          
+                [ngModel]="brand.updatedAt" 
                 (ngModelChange)="brand.updatedAt = $event" 
                 placeholder="Enter Updated Date" name="updatedAt">
         </div>
