@@ -9,6 +9,7 @@ import { Brand, BrandService } from 'src/app/services/inventory/brand.service';
 })
 export class BrandComponent implements OnInit {
 
+  pkHidden: Boolean = true;
   brandId: any = null;
   brand: Brand = new Brand(0, '', '', new Date(), new Date(), '');
 
@@ -20,7 +21,9 @@ export class BrandComponent implements OnInit {
 
   ngOnInit(): void {
     this.brandId = this.route.snapshot.paramMap.get('brandId');
-    this.loadBrand(this.brandId);
+    if (this.brandId != -1) {
+      this.loadBrand(this.brandId);
+    }
   }
 
   loadBrand(brandId: any) {
@@ -31,21 +34,33 @@ export class BrandComponent implements OnInit {
     );
   }
 
+  createBrand() {
+    this.brandService.createBrand(this.brand).subscribe(
+      data => {
+        console.log(data),
+          this.router.navigate(['/all-brands'])
+      }
+    );
+  }
+
   // Update employee data
-  updateEmployee() {
-    if(window.confirm('Are you sure, you want to update?')){
-      this.brandService.updateBrand(this.brandId, this.brand).subscribe(data => {
-        this.router.navigate(['/all-brands'])
-      })
+  updateBrand() {
+    if (window.confirm('Are you sure, you want to update?')) {
+      this.brandService.updateBrand(this.brandId, this.brand).subscribe(
+        data => {
+          console.log(data),
+            this.router.navigate(['/all-brands'])
+        }
+      );
     }
   }
 
   saveBrand() {
-    this.brandService.updateBrand(this.brandId, this.brand).subscribe(
-      data => {
-        console.log(data)
-      }
-    )
+    if (this.brandId == -1) {
+      this.createBrand();
+    } else {
+      this.updateBrand();
+    }
   }
 
 }

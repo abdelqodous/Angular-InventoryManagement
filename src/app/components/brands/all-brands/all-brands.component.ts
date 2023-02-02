@@ -44,33 +44,35 @@ export class AllBrandsComponent implements OnInit {
     );
   }*/
 
-  handleException(){
-    this.brandService.brandFailure().subscribe( 
+  handleException() {
+    this.brandService.brandFailure().subscribe(
       error => this.handleErrorResponse(error)
-      );
+    );
   }
 
-  handleErrorResponse(error: Object){
+  handleErrorResponse(error: Object) {
     console.log(error)
     // console.log(error)
     this.responseErrorMessage = error
   }
 
-  findBrandById(brandId: number){
-    this.brandService.getBrand(brandId).subscribe( 
+  findBrandById(brandId: number) {
+    this.brandService.getBrand(brandId).subscribe(
       response => console.log(response)
     );
   }
-
-    // Delete employee
-    deleteBrand(brandId: any) {
-      if (window.confirm('Are you sure, you want to delete?')) {
-        this.brandService.deleteBrand(brandId).subscribe((data) => {
-          this.loadBrands();
-          this.successDeleteMessage = `Brand ${brandId} has been deleted..`;
-        });
-      }
+  addBrand() {
+    this.router.navigate(['/brand', -1]);
+  }
+  // Delete employee
+  deleteBrand(brandId: any) {
+    if (window.confirm('Are you sure, you want to delete?')) {
+      this.brandService.deleteBrand(brandId).subscribe((data) => {
+        this.loadBrands();
+        this.successDeleteMessage = `Brand ${brandId} has been deleted..`;
+      });
     }
+  }
 
   /*deleteBrand(brandId: number){
     this.brandService.deleteBrand(brandId).subscribe( 
@@ -81,8 +83,8 @@ export class AllBrandsComponent implements OnInit {
       }
     );
   }*/
-  
-  updateBrand(brandId: number){
+
+  updateBrand(brandId: number) {
     this.router.navigate(['/brand', brandId]);
     /*this.brandService.updateBrand(brandId).subscribe( 
       response => {

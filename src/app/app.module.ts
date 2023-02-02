@@ -15,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrandComponent } from './components/brands/brand/brand.component';
 import { RelativeDatePipePipe } from './pipes/inventory/relative-date-pipe.pipe';
 import { DatePipe } from '@angular/common';
+import { CustomPaginationComponent } from './components/custom/custom-pagination/custom-pagination.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -27,13 +29,15 @@ import { DatePipe } from '@angular/common';
     FooterComponent,
     LogoutComponent,
     BrandComponent,
-    RelativeDatePipePipe
+    RelativeDatePipePipe,
+    CustomPaginationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPaginationModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
