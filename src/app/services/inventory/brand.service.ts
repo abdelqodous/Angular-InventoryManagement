@@ -23,7 +23,7 @@ export class BrandService {
   constructor(private httpClient: HttpClient) { }
 
   // Http Options
-  httpOptions = {
+  /*httpOptions = {
     headers: new HttpHeaders({
       "Access-Control-Allow-Origin": "http://localhost:9090" ,
       "Access-Control-Allow-Credentials": "true",
@@ -31,10 +31,32 @@ export class BrandService {
       "Access-Control-Allow-Methods" : "GET, POST, PUT, DELETE, OPTIONS",
       credentials: 'include'
     })
-  };
+  };*/
+
+  createBasicAuthenHttpHeader(){
+    let userName = 'admin';
+    let password = 'admin';
+    let basicAuthenHeaderStr = 'Basic ' + window.btoa(userName + ':' + password);
+    return basicAuthenHeaderStr;
+  }
+
+
   getBrands(): Observable<Brand[]> {
+    let basicAuthenHeaderStr = this.createBasicAuthenHttpHeader();
+    let theHeaders = new HttpHeaders(
+        { Authorization : basicAuthenHeaderStr}
+      ) 
+
+      /* let theHeaders = new HttpHeaders(
+         { Authorization : 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmRlbHFvZG91cyIsImlhdCI6MTY3NzU5NTAyNSwiZXhwIjoxNjc3NTk2NDY1fQ.zAru3OobIHOzLkyj3fYQ2MIaMhXdGqpTYlvvpNNQapc'}
+       ) */
+
+      /*  let theHeaders= new HttpHeaders(
+        {"Access-Control-Allow-Methods" : "GET, POST, PUT, DELETE, OPTIONS"}
+        ) */
+
     return this.httpClient
-      .get<Brand[]>(this.apiURL + '/api/inventory/v1/brands')
+      .get<Brand[]>('http://localhost:9090/v1/api/inventory/brands', {headers : theHeaders})
       .pipe(retry(1), catchError(this.handleError));
   }
 
@@ -72,13 +94,18 @@ export class BrandService {
   }*/
 
   createBrand(brand: any): Observable<Brand> {
+
     return this.httpClient
+    .post<Brand>(this.apiURL + '/api/inventory/v1/brands/', JSON.stringify(brand))
+    .pipe(retry(1), catchError(this.handleError));
+
+    /*return this.httpClient
       .post<Brand>(
         this.apiURL + '/api/inventory/v1/brands',
         JSON.stringify(brand),
         this.httpOptions
       )
-      .pipe(retry(1), catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));*/
   }
 
   /*createBrand(brand: Brand) {
@@ -87,12 +114,16 @@ export class BrandService {
 
   updateBrand(id: any, brand:Brand): Observable<Brand> {
     return this.httpClient
+      .put<Brand>( this.apiURL + '/api/inventory/v1/brands/' + id, JSON.stringify(brand))
+      .pipe(retry(1), catchError(this.handleError));
+    
+    /*return this.httpClient
       .put<Brand>(
         this.apiURL + '/api/inventory/v1/brands/' + id,
         JSON.stringify(brand),
         this.httpOptions
       )
-      .pipe(retry(1), catchError(this.handleError));
+      .pipe(retry(1), catchError(this.handleError));*/
   }
 
   /*updateBrand(brand: Brand) {
@@ -101,7 +132,7 @@ export class BrandService {
 
   deleteBrand(id: any) {
     return this.httpClient
-      .delete<Brand>(this.apiURL + '/api/inventory/v1/brands/' + id, this.httpOptions)
+      .delete<Brand>(this.apiURL + '/api/inventory/v1/brands/' + id)
       .pipe(retry(1), catchError(this.handleError));
   }
 
@@ -109,4 +140,5 @@ export class BrandService {
     return this.httpClient.delete(`http://localhost:9090/api/inventory/v1/brands/${brandId}`);
   }*/
 
+  
 }

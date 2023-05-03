@@ -19,20 +19,20 @@
                   <small *ngIf="invalideLogin">{{loginErrorMsg}}</small>
 
                   <div class="form-outline mb-4">
-                    <label  class="form-label" for="userName">User name</label>
+                    <label  class="form-label" for="userName">*User name</label>
                     <input  type="text" id="userName" class="form-control"
-                            placeholder="User name" [(ngModel)]="userName"
+                            placeholder="User name" [(ngModel)]="loginRequest.userName"
                             [ngModelOptions]="{standalone: true}"/>
                   </div>
                   <br>
                   <div class="form-outline mb-4">
-                    <label  class="form-label" for="password">Password</label>
+                    <label  class="form-label" for="password">*Password</label>
                     <input  type="password" id="password" class="form-control"  
-                            [(ngModel)]="password" [ngModelOptions]="{standalone: true}"/>
+                            [(ngModel)]="loginRequest.password" [ngModelOptions]="{standalone: true}"/>
                   </div>
                   <div>
-                    user name is: {{userName}}
-                  </div>
+                    user name is: {{loginRequest.userName}}
+                    </div>
                   <br>
                   <div class="text-center pt-1 mb-5 pb-1">
                     <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button"
