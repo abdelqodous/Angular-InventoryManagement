@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, retry, throwError } from 'rxjs';
+import { httpOptions } from '../security/constants';
 
 export class Brand{
   constructor(
@@ -17,46 +18,17 @@ export class Brand{
   providedIn: 'root'
 })
 export class BrandService {
-  // Define API
-  apiURL = 'http://localhost:9090';
+  apiUrl = 'http://localhost:9090/v1/api/inventory';
 
   constructor(private httpClient: HttpClient) { }
 
-  // Http Options
-  /*httpOptions = {
-    headers: new HttpHeaders({
-      "Access-Control-Allow-Origin": "http://localhost:9090" ,
-      "Access-Control-Allow-Credentials": "true",
-      'Content-Type':  'application/json',
-      "Access-Control-Allow-Methods" : "GET, POST, PUT, DELETE, OPTIONS",
-      credentials: 'include'
-    })
-  };*/
-
-  createBasicAuthenHttpHeader(){
-    let userName = 'admin';
-    let password = 'admin';
-    let basicAuthenHeaderStr = 'Basic ' + window.btoa(userName + ':' + password);
-    return basicAuthenHeaderStr;
-  }
-
-
   getBrands(): Observable<Brand[]> {
-    let basicAuthenHeaderStr = this.createBasicAuthenHttpHeader();
-    let theHeaders = new HttpHeaders(
-        { Authorization : basicAuthenHeaderStr}
-      ) 
-
-      /* let theHeaders = new HttpHeaders(
-         { Authorization : 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmRlbHFvZG91cyIsImlhdCI6MTY3NzU5NTAyNSwiZXhwIjoxNjc3NTk2NDY1fQ.zAru3OobIHOzLkyj3fYQ2MIaMhXdGqpTYlvvpNNQapc'}
-       ) */
-
-      /*  let theHeaders= new HttpHeaders(
-        {"Access-Control-Allow-Methods" : "GET, POST, PUT, DELETE, OPTIONS"}
-        ) */
+    const headers:HttpHeaders = new HttpHeaders({
+      'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
+    }); 
 
     return this.httpClient
-      .get<Brand[]>('http://localhost:9090/v1/api/inventory/brands', {headers : theHeaders})
+      .get<Brand[]>(`${this.apiUrl}/brands`, {headers})
       .pipe(retry(1), catchError(this.handleError));
   }
 
@@ -74,71 +46,45 @@ export class BrandService {
       return errorMessage;
     });
   }
-  
-  /*findAllBrands() {
-    return this.httpClient.get<Brand[]>('http://localhost:9090/api/inventory/v1/brands');
-  }*/
 
   brandFailure() {
-    return this.httpClient.get('http://localhost:9090/api/inventory/v1/brand-failure');
+    return this.httpClient.get(`${this.apiUrl}/brand-failure`);
   }
 
   getBrand(id: any): Observable<Brand> {
+    const headers:HttpHeaders = new HttpHeaders({
+      'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
+    }); 
     return this.httpClient
-      .get<Brand>(this.apiURL + '/api/inventory/v1/brands/' + id)
+      .get<Brand>(`${this.apiUrl}/brands/` + id, {headers})
       .pipe(retry(1), catchError(this.handleError));
   }
-
-  /*findBrandById(brandId: number) {
-    return this.httpClient.get<Brand>(`http://localhost:9090/api/inventory/v1/brands/${brandId}`);
-  }*/
 
   createBrand(brand: any): Observable<Brand> {
-
+    const headers:HttpHeaders = new HttpHeaders({
+      'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
+    }); 
+    console.log(headers);
     return this.httpClient
-    .post<Brand>(this.apiURL + '/api/inventory/v1/brands/', JSON.stringify(brand))
-    .pipe(retry(1), catchError(this.handleError));
-
-    /*return this.httpClient
-      .post<Brand>(
-        this.apiURL + '/api/inventory/v1/brands',
-        JSON.stringify(brand),
-        this.httpOptions
-      )
-      .pipe(retry(1), catchError(this.handleError));*/
+      .post<Brand>(`${this.apiUrl}/brands`, JSON.stringify(brand), {headers})
+      .pipe(retry(1), catchError(this.handleError));
   }
-
-  /*createBrand(brand: Brand) {
-    return this.httpClient.post<Brand>(`http://localhost:9090/api/inventory/v1/brands/`, brand);
-  }*/
 
   updateBrand(id: any, brand:Brand): Observable<Brand> {
+    const headers:HttpHeaders = new HttpHeaders({
+      'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
+    }); 
     return this.httpClient
-      .put<Brand>( this.apiURL + '/api/inventory/v1/brands/' + id, JSON.stringify(brand))
+      .put<Brand>( `${this.apiUrl}/brands/` + id,JSON.stringify(brand), {headers})
       .pipe(retry(1), catchError(this.handleError));
-    
-    /*return this.httpClient
-      .put<Brand>(
-        this.apiURL + '/api/inventory/v1/brands/' + id,
-        JSON.stringify(brand),
-        this.httpOptions
-      )
-      .pipe(retry(1), catchError(this.handleError));*/
   }
-
-  /*updateBrand(brand: Brand) {
-    return this.httpClient.put(`http://localhost:9090/api/inventory/v1/brands/`, brand, this.httpOptions);
-  }*/
 
   deleteBrand(id: any) {
+    const headers:HttpHeaders = new HttpHeaders({
+      'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
+    }); 
     return this.httpClient
-      .delete<Brand>(this.apiURL + '/api/inventory/v1/brands/' + id)
+      .delete<Brand>(`${this.apiUrl}/brands/` + id, {headers})
       .pipe(retry(1), catchError(this.handleError));
   }
-
-  /*deleteBrand(brandId: number) {
-    return this.httpClient.delete(`http://localhost:9090/api/inventory/v1/brands/${brandId}`);
-  }*/
-
-  
 }

@@ -15,7 +15,7 @@ export class AllBrandsComponent implements OnInit {
 
   constructor(
     private brandService: BrandService,
-    private router: Router) { }
+    private router: Router) {}
 
   ngOnInit(): void {
     this.loadBrands()
@@ -26,23 +26,6 @@ export class AllBrandsComponent implements OnInit {
       this.brands = data;
     });
   }
-
-  /*retreiveBrands(){
-    this.brandService.getBrands().subscribe( 
-      response => this.brands = response
-      // this.brands = response.Brand;
-      //   this.date3 = this.datePipe.transform(this.demographics.Birthdate, 'dd.mm.yy');
-    );
-  }
-
-  findAllBrands(){
-    this.brandService.getBrands().subscribe( 
-      response => {
-        this.brands = response,
-        console.log ('this.brands: date: ', this.brands[0].createdAt)
-      }
-    );
-  }*/
 
   handleException() {
     this.brandService.brandFailure().subscribe(
@@ -74,25 +57,10 @@ export class AllBrandsComponent implements OnInit {
     }
   }
 
-  /*deleteBrand(brandId: number){
-    this.brandService.deleteBrand(brandId).subscribe( 
-      response => {
-        console.log(response);
-        this.successDeleteMessage = `Brand ${brandId} has been deleted..`;
-        this.loadBrands();
-      }
-    );
-  }*/
+
 
   updateBrand(brandId: number) {
     this.router.navigate(['/brand', brandId]);
-    /*this.brandService.updateBrand(brandId).subscribe( 
-      response => {
-        console.log(response);
-        this.successDeleteMessage = `Brand ${brandId} has been deleted..`;
-        this.retreiveBrands(); 
-      }
-    );*/
   }
 }
 

@@ -21,30 +21,10 @@ export class AuthenResponse{
 export class AuthenticationService {
   private readonly apiUrl = 'http://localhost:9090/api/v1/auth';
 
-  constructor(
-    private http: HttpClient) { }
+  constructor( private http: HttpClient) {}
 
-  // authenticatedUser(userName: string, password: string):Observable<AuthenticationRequest>{
   authenticatedUser(loginRequest: LoginRequest):Observable<AuthenResponse>{
-    const headers = new HttpHeaders({
-        'Content-Type': 'application/json'
-      });
-      // const body = { userName, password };
-      return this.http.post<AuthenResponse>(`${this.apiUrl}/authenticate`, loginRequest);
-
-      /*this.httpClient
-    .post<Brand>(this.apiURL + '/api/inventory/v1/brands/', JSON.stringify(brand))
-    .pipe(retry(1), catchError(this.handleError));*/
-
-    
-    
-    /*if(userName == 'abdelqodous' && password == '123'){
-      sessionStorage.setItem('authenticatedUser', userName);
-      return true;
-    }else{
-      return false;
-    }*/
-
+    return this.http.post<AuthenResponse>(`${this.apiUrl}/authenticate`, loginRequest);
   }
 
   loggedInUser(){
